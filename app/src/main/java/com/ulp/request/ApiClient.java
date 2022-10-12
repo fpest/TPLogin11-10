@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.ulp.model.Usuario;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -40,11 +42,12 @@ public class ApiClient {
     public static void guardar(Context context, Usuario usuario) {
 
         try {
-            File a = conectar(context);
-            FileOutputStream fo = new FileOutputStream(a);
-            ObjectOutputStream oos = new ObjectOutputStream(fo);
+            File a= conectar(context);
+            FileOutputStream fo=new FileOutputStream(a);
+            BufferedOutputStream bo= new BufferedOutputStream(fo);
+            ObjectOutputStream oos=new ObjectOutputStream(bo);
             oos.writeObject(usuario);
-            fo.flush();
+            bo.flush();
             fo.close();
 
         } catch (FileNotFoundException e) {
@@ -60,7 +63,8 @@ public class ApiClient {
             try{
                 File a= conectar(context);
                 FileInputStream fi=new FileInputStream(a);
-                ObjectInputStream ois=new ObjectInputStream(fi);
+                BufferedInputStream bi= new BufferedInputStream(fi);
+                ObjectInputStream ois=new ObjectInputStream(bi);
                 usuario = (Usuario) ois.readObject();
                 fi.close();
             } catch (FileNotFoundException | ClassNotFoundException e) {
